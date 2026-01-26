@@ -1,19 +1,42 @@
 
 import { AnnualReportData } from "../types";
 
+// 环境变量配置
+// 注意：在本地开发使用 Vite 代理时，请使用相对路径以避免 CORS 问题
+// 生产环境可以使用完整 URL
+const CONFIG = {
+  // 生产环境 (保留原有配置作为生产环境/默认)
+  production: {
+    apiUrl: 'DifyWorkflowHandler.ashx',
+    workflowId: '22C0866A-3BCB-844B-B503-EEDC4663F738'
+  },
+
+  test: {
+    apiUrl: 'https://test1.tepc.cn/jetopcms/KS/DifyWorkflowHandler.ashx',
+    workflowId: '90d04f00-8296-8b0e-fc94-f6a2ed0a6105'
+  }
+};
+
+// 当前使用的配置 - 可以根据环境变量自动切换，这里暂时手动指定或默认为测试
+// 比如: const currentConfig = import.meta.env.MODE === 'production' ? CONFIG.production : CONFIG.test;
+// 根据用户请求，现在主要配置测试环境
+const currentConfig = CONFIG.test;
+
 const generateInspiringMessage = async (userData: AnnualReportData): Promise<string> => {
   try {
-    const response = await fetch('DifyWorkflowHandler.ashx', {
+    const response = await fetch(currentConfig.apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        workflow_id: '22C0866A-3BCB-844B-B503-EEDC4663F738',
-        inputs: userData,
+        workflow_id: currentConfig.workflowId,
+        inputs: {
+          userData: JSON.stringify(userData)
+        },
         query: "Generate Annual Report Summary",
         stream: true,
-        conversation_id: "", // 此函数中无会话 ID 上下文
+        conversation_id: "",
         files: [],
         http_method: "POST"
       })
@@ -23,20 +46,9 @@ const generateInspiringMessage = async (userData: AnnualReportData): Promise<str
       throw new Error(`API call failed with status: ${response.status}`);
     }
 
-    // 处理响应。假设 stream: true 返回 SSE 或文本流。
-    // 为了简化该返回 Promise<string> 的函数，我们倾向于获取完整的文本。
-    // 我们将读取流直至完成。
     const text = await response.text();
 
-    // 尝试解析是否为 SSE 格式，以便在需要时提取实际消息。
-    // Dify SSE 通常格式：data: {"event": "text_chunk", "data":{ "text": "..."}}
-    // 或 data: {"event": "workflow_finished", "data": {"outputs": {"output": "..."}}}
-    // 检查响应是类 JSON 还是原始文本。
-    // 鉴于可变性，如果看起来像 SSE，我们将尝试清理它，否则按原样返回。
-
-    // 简单的启发式方法：如果包含 "data:"，尝试提取有用部分。
     if (text.includes('data:')) {
-      // 从 JSON 行中提取所有 "text" 或 "answer" 字段
       const lines = text.split('\n');
       let resultText = '';
       for (const line of lines) {
