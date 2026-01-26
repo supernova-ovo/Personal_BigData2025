@@ -1,36 +1,30 @@
 
 import { AnnualReportData } from "../types";
 
-// 环境变量配置
-// 注意：在本地开发使用 Vite 代理时，请使用相对路径以避免 CORS 问题
-// 生产环境可以使用完整 URL
-const CONFIG = {
-  // 生产环境 (保留原有配置作为生产环境/默认)
-  production: {
-    apiUrl: 'DifyWorkflowHandler.ashx',
-    workflowId: '22C0866A-3BCB-844B-B503-EEDC4663F738'
-  },
+// 检测是否为生产环境
+const isProduction = import.meta.env.MODE === 'production';
 
-  test: {
-    apiUrl: 'https://test1.tepc.cn/jetopcms/KS/DifyWorkflowHandler.ashx',
-    workflowId: '90d04f00-8296-8b0e-fc94-f6a2ed0a6105'
-  }
-};
+// 生产环境配置
+const PROD_WORKFLOW_API_URL = '/jetopcms/KS/DifyWorkflowHandler.ashx';
+const PROD_WORKFLOW_ID = '22C0866A-3BCB-844B-B503-EEDC4663F738';
 
-// 当前使用的配置 - 可以根据环境变量自动切换，这里暂时手动指定或默认为测试
-// 比如: const currentConfig = import.meta.env.MODE === 'production' ? CONFIG.production : CONFIG.test;
-// 根据用户请求，现在主要配置测试环境
-const currentConfig = CONFIG.test;
+// 测试环境配置
+const TEST_WORKFLOW_API_URL = 'https://test1.tepc.cn/jetopcms/KS/DifyWorkflowHandler.ashx';
+const TEST_WORKFLOW_ID = '90d04f00-8296-8b0e-fc94-f6a2ed0a6105';
+
+// 根据环境自动选择配置
+const WORKFLOW_API_URL = isProduction ? PROD_WORKFLOW_API_URL : TEST_WORKFLOW_API_URL;
+const WORKFLOW_ID = isProduction ? PROD_WORKFLOW_ID : TEST_WORKFLOW_ID;
 
 const generateInspiringMessage = async (userData: AnnualReportData): Promise<string> => {
   try {
-    const response = await fetch(currentConfig.apiUrl, {
+    const response = await fetch(WORKFLOW_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        workflow_id: currentConfig.workflowId,
+        workflow_id: WORKFLOW_ID,
         inputs: {
           userData: JSON.stringify(userData)
         },
