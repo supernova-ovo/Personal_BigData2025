@@ -6,18 +6,33 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+// 检测是否为生产环境
+const isProduction = import.meta.env.MODE === 'production';
+
+// 生产环境配置
+const PROD_API_URL = '/jetopcms/KS/sectionHandler.ashx';
+const PROD_API_ID = '068eb949-fbf2-d831-e179-987ee3986d80';
+
+// 测试环境配置
+const TEST_API_URL = 'https://test1.tepc.cn/jetopcms/KS/sectionHandler.ashx';
+const TEST_API_ID = '017d373c-4f50-3467-7353-5d6747b282b8';
+
+// 根据环境自动选择配置
+const API_URL = isProduction ? PROD_API_URL : TEST_API_URL;
+const API_ID = isProduction ? PROD_API_ID : TEST_API_ID;
+
 class ApiService {
   async getUserSummary(): Promise<ApiResponse<AnnualReportData>> {
     try {
       const requestBody = {
-        "id": "017d373c-4f50-3467-7353-5d6747b282b8"
+        "id": API_ID
       };
 
       // 使用与jQuery $.ajax 完全相同的请求方式
       const formData = new URLSearchParams();
       formData.append('id', requestBody.id);
 
-      const response = await fetch('https://test1.tepc.cn/jetopcms/KS/sectionHandler.ashx', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
