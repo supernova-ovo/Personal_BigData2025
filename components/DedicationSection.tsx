@@ -22,15 +22,44 @@ const DedicationSection: React.FC<DedicationSectionProps> = ({ data }) => {
   const safeTime = (timeStr: string | null) => {
       if (!timeStr) return '--:--';
       try {
-          return timeStr.includes(' ') ? timeStr.split(' ')[1] : timeStr;
-      } catch (e) {
+          // 处理 ISO 8601 格式: 2019-01-01T08:14:50.970000
+          if (timeStr.includes('T')) {
+              const timePart = timeStr.split('T')[1];
+              // 提取 HH:mm:ss 部分（去掉毫秒）
+              const timeOnly = timePart.split('.')[0];
+              // 只显示 HH:mm
+              return timeOnly.split(':').slice(0, 2).join(':');
+          }
+          // 处理空格分隔的格式: "2019-01-01 08:14:50"
+          if (timeStr.includes(' ')) {
+              const timePart = timeStr.split(' ')[1];
+              return timePart.split(':').slice(0, 2).join(':');
+          }
+          // 如果已经是时间格式，直接返回
           return timeStr;
+      } catch (e) {
+          console.error('时间解析错误:', e, timeStr);
+          return '--:--';
       }
   };
 
   const safeDate = (dateStr: string | null) => {
       if (!dateStr) return '未知日期';
-      return dateStr.split(' ')[0];
+      try {
+          // 处理 ISO 8601 格式: 2019-01-01T08:14:50.970000
+          if (dateStr.includes('T')) {
+              return dateStr.split('T')[0];
+          }
+          // 处理空格分隔的格式: "2019-01-01 08:14:50"
+          if (dateStr.includes(' ')) {
+              return dateStr.split(' ')[0];
+          }
+          // 如果已经是日期格式，直接返回
+          return dateStr;
+      } catch (e) {
+          console.error('日期解析错误:', e, dateStr);
+          return '未知日期';
+      }
   };
 
   return (
@@ -54,7 +83,7 @@ const DedicationSection: React.FC<DedicationSectionProps> = ({ data }) => {
              <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500"></div>
              <p className="text-xs text-cyan-200/70 uppercase tracking-widest font-bold mb-2">全年在岗总时长</p>
              <div className="flex items-baseline justify-center">
-                 <span className="text-5xl font-black text-white drop-shadow-md">{(data.ZaiGangZSC || 0).toFixed(0)}</span>
+                 <span className="text-5xl font-black text-white drop-shadow-md">{Number(data.ZaiGangZSC || 0).toFixed(0)}</span>
                  <span className="text-sm text-cyan-400 ml-1 font-bold">小时</span>
              </div>
              <div className="mt-2 flex justify-center items-center opacity-80">
@@ -78,7 +107,7 @@ const DedicationSection: React.FC<DedicationSectionProps> = ({ data }) => {
              {data.DengLuPX !== null && (
                 <>
                     <div className="w-full bg-gray-800 h-1 mt-2 rounded-full overflow-hidden">
-                        <div className="bg-blue-500 h-full" style={{ width: `${Math.min(data.DengLuPX, 100)}%` }}></div>
+                        <div className="bg-blue-500 h-full" style={{ width: `${Math.min(Number(data.DengLuPX), 100)}%` }}></div>
                     </div>
                     <p className="text-[9px] text-blue-300 mt-1 text-right">超越 {data.DengLuPX}% 同事</p>
                 </>
@@ -120,7 +149,7 @@ const DedicationSection: React.FC<DedicationSectionProps> = ({ data }) => {
           <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/10">
               <div 
                 className="h-full bg-gradient-to-r from-cyan-600 to-blue-600 shadow-[0_0_10px_cyan]" 
-                style={{ width: `${data.GongLingPX || 0}%` }}
+                style={{ width: `${Number(data.GongLingPX || 0)}%` }}
               ></div>
           </div>
       </div>

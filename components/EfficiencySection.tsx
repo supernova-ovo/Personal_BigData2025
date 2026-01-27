@@ -54,18 +54,18 @@ const EfficiencySection: React.FC<EfficiencySectionProps> = ({ data }) => {
           <div className="bg-slate-900/80 border border-purple-500/30 p-3 rounded-lg backdrop-blur-sm">
                <p className="text-[10px] text-gray-400">处理率</p>
                <p className="text-xl font-bold text-white">{data.ChuLiL || 0}%</p>
-               <p className="text-[9px] text-gray-500 mt-1">平均耗时: {((data.PingJunCLSC || 0)/60).toFixed(1)}h</p>
+               <p className="text-[9px] text-gray-500 mt-1">平均耗时: {(Number(data.PingJunCLSC || 0)/60).toFixed(1)}h</p>
           </div>
 
           {/* PC vs App */}
           <div className="col-span-2 bg-black/60 border border-white/10 p-3 rounded-lg flex items-center justify-between">
               <div className="flex flex-col items-center w-1/2 border-r border-white/10">
                   <span className="text-[10px] text-cyan-300 uppercase">Client Ops</span>
-                  <span className="text-lg font-bold text-white">{(data.Client_APM || 0).toLocaleString()}</span>
+                  <span className="text-lg font-bold text-white">{Number(data.Client_APM || 0).toLocaleString()}</span>
               </div>
               <div className="flex flex-col items-center w-1/2">
                   <span className="text-[10px] text-pink-300 uppercase">App Ops</span>
-                  <span className="text-lg font-bold text-white">{(data.App_APM || 0).toLocaleString()}</span>
+                  <span className="text-lg font-bold text-white">{Number(data.App_APM || 0).toLocaleString()}</span>
               </div>
           </div>
           
