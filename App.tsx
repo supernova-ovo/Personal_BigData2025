@@ -12,110 +12,6 @@ import AiMessageSection from './components/AiMessageSection';
 import { AnnualReportData } from './types';
 import { apiService } from './services/apiService';
 
-// Mock Data based on user provided JSON
-const mockUserData: AnnualReportData = {
-  XingMing: "李云龙",
-  GongHao: "06897",
-  GongLingN: 13,
-  GongLingT: 165,
-  GangWei: "商务经理助理",
-  NianJia: 10,
-  ChuChaiCS: 2,
-  ChuChaiTS: 8,
-  ChuChaiCity: "北京, 上海",
-  ZaiGangZSC: 2523.8,
-  QingJiaTS: 0,
-  QianDao: "2024-01-01 06:42:05",
-  QianTui: "2024-01-01 23:57:44",
-  RiZuiCZG: 16.5,
-  DengLuCS: 2429,
-  ZuiZaoSX: "05:12:16",
-  ZuiWanXX: "04:57:23",
-  YiBanSL: "7450",
-  ChuLiL: 98.9,
-  PingJunCLSC: 1536,
-  GongLingPX: 78.7,
-  ZaiGangPX: 73.7,
-  DengLuPX: 97.5,
-  ChuLiSCPX: 94.9,
-  Apmpx: 88.2,
-  JiangLiS: 2,
-  JiangLi: "蜜蜂奖,商务标兵",
-  R_rsdt: 2449,
-  R_zsfx: 1,
-  R_zt: 4,
-  R_qt: 0,
-  N_rsdt: 20,
-  N_zsfx: 0,
-  N_zt: 0,
-  N_qt: 0,
-  Zancnt: 25,
-  Readcnt: 5021,
-  Apm: 22615,
-  App_APM: 4762,
-  Client_APM: 17853,
-  NianFen: "2025",
-  ZaiGangTB: 120,
-  RiZaiGTB: null,
-  DengLuTB: 1220,
-  YiBanTB: -405,
-  ChuLiSCTB: -677,
-  YueDuTB: 3674,
-  CaoZuoSTB: 1693,
-  BiYeYX: "西北联合大学",
-  XiaoYou: "石宗广;赵刚",
-  XiaoYouSh: 2,
-  ExamCiShu: 6,
-  TimuShu: 103,
-  MaxScore: 100,
-  RiZuiCZG_Date: "2024-03-16",
-  ZuiDuoYW: "工作报告单",
-  XinWenCS: null,
-  FuJianSL: 3950
-};
-
-// Data Source Toggle Component
-const DataSourceToggle: React.FC<{
-  useMock: boolean;
-  onToggle: (useMock: boolean) => void;
-  isLoading?: boolean;
-}> = ({ useMock, onToggle, isLoading = false }) => (
-  <div className="fixed top-4 left-4 z-50">
-    <div className="bg-slate-900/90 backdrop-blur-md border border-slate-700/50 rounded-lg p-3 shadow-lg">
-      <div className="flex items-center space-x-2">
-        <span className="text-xs font-medium text-slate-300 mr-2">数据源:</span>
-        <div className="flex bg-slate-800 rounded-md p-1">
-          <button
-            onClick={() => onToggle(true)}
-            disabled={isLoading && !useMock}
-            className={`px-3 py-1.5 text-xs font-medium rounded transition-all duration-200 ${
-              useMock
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-300 hover:bg-slate-700/50'
-            } ${isLoading && !useMock ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            演示数据
-          </button>
-          <button
-            onClick={() => onToggle(false)}
-            disabled={isLoading && useMock}
-            className={`px-3 py-1.5 text-xs font-medium rounded transition-all duration-200 ${
-              !useMock
-                ? 'bg-green-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-300 hover:bg-slate-700/50'
-            } ${isLoading && useMock ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            实时数据
-          </button>
-        </div>
-        {isLoading && !useMock && (
-          <div className="w-4 h-4 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin"></div>
-        )}
-      </div>
-    </div>
-  </div>
-);
-
 // Loading and Error components
 const LoadingSpinner: React.FC = () => (
   <div className="w-full h-screen flex items-center justify-center bg-[#050A1F]">
@@ -166,15 +62,12 @@ const sectionGradients: Record<string, string> = {
 
 const App: React.FC = () => {
   const [userData, setUserData] = useState<AnnualReportData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
-  const [useMock, setUseMock] = useState(true); // Default to mock data for demo
 
   // Fetch user data from API
   const fetchUserData = async () => {
-    if (useMock) return; // Don't fetch if using mock data
-
     try {
       setLoading(true);
       setError(null);
@@ -192,25 +85,13 @@ const App: React.FC = () => {
     }
   };
 
-  // Handle data source toggle
-  const handleDataSourceToggle = (newUseMock: boolean) => {
-    setUseMock(newUseMock);
-    if (newUseMock) {
-      // Switching to mock mode - clear API data and errors
-      setError(null);
-      setLoading(false);
-    }
-  };
-
-  // Fetch data when switching to API mode
+  // Fetch data on component mount
   useEffect(() => {
-    if (!useMock) {
-      fetchUserData();
-    }
-  }, [useMock]);
+    fetchUserData();
+  }, []);
 
-  // Calculate display data based on selected source
-  const displayData = useMock ? mockUserData : userData;
+  // Use API data directly
+  const displayData = userData;
 
   // Filter sections based on data availability
   const visibleSections = useMemo(() => {
@@ -283,13 +164,13 @@ const App: React.FC = () => {
     return sections.filter(section => section.shouldShow);
   }, [displayData]);
 
-  // Show loading state (only when using API)
-  if (loading && !useMock) {
+  // Show loading state
+  if (loading) {
     return <LoadingSpinner />;
   }
 
-  // Show error state (only when using API)
-  if (error && !useMock) {
+  // Show error state
+  if (error) {
     return <ErrorMessage message={error} onRetry={fetchUserData} />;
   }
 
@@ -300,12 +181,6 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory no-scrollbar text-white relative">
-      {/* Data Source Toggle */}
-      <DataSourceToggle
-        useMock={useMock}
-        onToggle={handleDataSourceToggle}
-        isLoading={loading}
-      />
 
       {/* Global Background Layer with Deep Blue base */}
       <div className="fixed inset-0 -z-50 bg-[#050A1F]">
