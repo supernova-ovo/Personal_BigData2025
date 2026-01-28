@@ -73,18 +73,18 @@ const App: React.FC = () => {
       setError(null);
       console.log('🟣 [App] 开始获取用户数据...');
       const response = await apiService.getUserSummary();
-      console.log('🟣 [App] API 响应:', response);
+      // console.log('🟣 [App] API 响应:', response);
 
       if (response.success && response.data) {
-        console.log('🟣 [App] 设置用户数据:', response.data);
-        console.log('🟣 [App] 数据关键字段:', {
-          XingMing: response.data.XingMing,
-          GongHao: response.data.GongHao,
-          Apm: response.data.Apm,
-          ExamCiShu: response.data.ExamCiShu,
-          Readcnt: response.data.Readcnt,
-          Zancnt: response.data.Zancnt
-        });
+        // console.log('🟣 [App] 设置用户数据:', response.data);
+        // console.log('🟣 [App] 数据关键字段:', {
+        //   XingMing: response.data.XingMing,
+        //   GongHao: response.data.GongHao,
+        //   Apm: response.data.Apm,
+        //   ExamCiShu: response.data.ExamCiShu,
+        //   Readcnt: response.data.Readcnt,
+        //   Zancnt: response.data.Zancnt
+        // });
         setUserData(response.data);
       } else {
         console.error('🟣 [App] API 返回失败:', response.message);
@@ -109,19 +109,19 @@ const App: React.FC = () => {
   // 调试日志：检查 displayData
   useEffect(() => {
     if (displayData) {
-      console.log('🟠 [App] displayData 已设置:', displayData);
-      console.log('🟠 [App] displayData 关键字段:', {
-        XingMing: displayData.XingMing,
-        GongHao: displayData.GongHao,
-        Apm: displayData.Apm,
-        ExamCiShu: displayData.ExamCiShu,
-        Readcnt: displayData.Readcnt,
-        Zancnt: displayData.Zancnt,
-        ZaiGangZSC: displayData.ZaiGangZSC,
-        DengLuCS: displayData.DengLuCS
-      });
+      // console.log('🟠 [App] displayData 已设置:', displayData);
+      // console.log('🟠 [App] displayData 关键字段:', {
+      //   XingMing: displayData.XingMing,
+      //   GongHao: displayData.GongHao,
+      //   Apm: displayData.Apm,
+      //   ExamCiShu: displayData.ExamCiShu,
+      //   Readcnt: displayData.Readcnt,
+      //   Zancnt: displayData.Zancnt,
+      //   ZaiGangZSC: displayData.ZaiGangZSC,
+      //   DengLuCS: displayData.DengLuCS
+      // });
     } else {
-      console.log('🟠 [App] displayData 为空');
+      // console.log('🟠 [App] displayData 为空');
     }
   }, [displayData]);
 

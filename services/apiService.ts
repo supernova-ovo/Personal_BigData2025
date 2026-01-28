@@ -143,7 +143,7 @@ class ApiService {
 
       // 尝试提取数据
       resultData = extractResultData(parsedData);
-      console.log('🟢 [API Service] 提取后的 resultData:', JSON.stringify(resultData, null, 2));
+      // console.log('🟢 [API Service] 提取后的 resultData:', JSON.stringify(resultData, null, 2));
 
       // 如果没有找到 result，尝试其他可能的格式
       if (!resultData) {
@@ -190,21 +190,21 @@ class ApiService {
           // 保留原字段名，以防其他地方使用
         }
       }
-      console.log('🟡 [API Service] 字段映射后的 mappedData:', JSON.stringify(mappedData, null, 2));
-      console.log('🟡 [API Service] mappedData 关键字段检查:', {
-        XingMing: mappedData.XingMing || mappedData.xingMing,
-        GongHao: mappedData.GongHao || mappedData.gongHao,
-        Apm: mappedData.Apm || mappedData.APM,
-        ExamCiShu: mappedData.ExamCiShu || mappedData.examCiShu,
-        Readcnt: mappedData.Readcnt || mappedData.readcnt,
-        Zancnt: mappedData.Zancnt || mappedData.zancnt
-      });
+      // console.log('🟡 [API Service] 字段映射后的 mappedData:', JSON.stringify(mappedData, null, 2));
+      // console.log('🟡 [API Service] mappedData 关键字段检查:', {
+      //   XingMing: mappedData.XingMing || mappedData.xingMing,
+      //   GongHao: mappedData.GongHao || mappedData.gongHao,
+      //   Apm: mappedData.Apm || mappedData.APM,
+      //   ExamCiShu: mappedData.ExamCiShu || mappedData.examCiShu,
+      //   Readcnt: mappedData.Readcnt || mappedData.readcnt,
+      //   Zancnt: mappedData.Zancnt || mappedData.zancnt
+      // });
 
       const finalResponse = {
         success: true,
         data: mappedData
       };
-      console.log('✅ [API Service] 最终返回数据:', JSON.stringify(finalResponse, null, 2));
+      // console.log('✅ [API Service] 最终返回数据:', JSON.stringify(finalResponse, null, 2));
       
       return finalResponse;
 
