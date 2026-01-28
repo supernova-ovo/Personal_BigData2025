@@ -1,4 +1,5 @@
 import { AnnualReportData } from '../types';
+import { mockUserData } from './mockData';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -8,6 +9,10 @@ export interface ApiResponse<T> {
 
 // 检测是否为生产环境
 const isProduction = import.meta.env.MODE === 'production';
+
+// 是否使用模拟数据（仅在开发环境有效）
+// 设置为 true 时使用本地测试数据，false 时调用真实接口
+const USE_MOCK_DATA = !isProduction && true; // 修改这里的 true/false 来切换
 
 // 生产环境配置
 const PROD_WORKFLOW_API_URL = '/jetopcms/KS/DifyWorkflowHandler.ashx';
@@ -23,6 +28,17 @@ const WORKFLOW_ID = isProduction ? PROD_WORKFLOW_ID : TEST_WORKFLOW_ID;
 
 class ApiService {
   async getUserSummary(): Promise<ApiResponse<AnnualReportData>> {
+    // 如果启用了模拟数据且在开发环境，直接返回测试数据
+    if (USE_MOCK_DATA && !isProduction) {
+      console.log('🎭 [API Service] 使用模拟数据进行测试');
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 800));
+      return {
+        success: true,
+        data: mockUserData
+      };
+    }
+
     try {
       const requestPayload = {
         workflow_id: WORKFLOW_ID,
@@ -84,7 +100,7 @@ class ApiService {
         // 移除调试日志，避免数据泄露
         // const indent = '  '.repeat(depth);
         // console.log(`${indent}🔍 [提取数据] 深度 ${depth}, 数据类型:`, Array.isArray(data) ? 'Array' : typeof data);
-        
+
         if (!data || typeof data !== 'object') {
           // console.log(`${indent}❌ [提取数据] 不是对象或为空`);
           return null;
@@ -205,7 +221,7 @@ class ApiService {
         data: mappedData
       };
       // console.log('✅ [API Service] 最终返回数据:', JSON.stringify(finalResponse, null, 2));
-      
+
       return finalResponse;
 
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import ParallaxSection from './components/ParallaxSection';
 import IntroSection from './components/IntroSection';
 import DedicationSection from './components/DedicationSection';
@@ -66,6 +66,16 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
 
+  // Ref for the scroll container
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Handle restart - scroll to top
+  const handleRestart = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   // Fetch user data from API
   const fetchUserData = async () => {
     try {
@@ -105,7 +115,7 @@ const App: React.FC = () => {
 
   // Use API data directly
   const displayData = userData;
-  
+
   // 调试日志：检查 displayData
   useEffect(() => {
     if (displayData) {
@@ -212,7 +222,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory no-scrollbar text-white relative">
+    <div ref={scrollContainerRef} className="h-screen w-full overflow-y-scroll snap-y snap-mandatory no-scrollbar text-white relative">
 
       {/* Global Background Layer with Deep Blue base */}
       <div className="fixed inset-0 -z-50 bg-[#050A1F]">
@@ -330,7 +340,10 @@ const App: React.FC = () => {
 
       {visibleSections.map((section, index) => (
         <ParallaxSection key={section.id} index={index} onInView={setActiveSection}>
-          <section.Component data={displayData!} />
+          <section.Component
+            data={displayData!}
+            {...(section.id === 'AI_SUMMARY' ? { onRestart: handleRestart } : {})}
+          />
         </ParallaxSection>
       ))}
 

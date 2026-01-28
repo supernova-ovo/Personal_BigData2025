@@ -8,7 +8,7 @@ interface SummarySectionProps {
 }
 
 const SummarySection: React.FC<SummarySectionProps> = ({ data }) => {
-  
+
   // 1. Calculate Annual Keyword
   const keyword = useMemo(() => {
     if (Number(data.Apmpx || 0) > 95) return "赛博·键盘侠";
@@ -34,7 +34,7 @@ const SummarySection: React.FC<SummarySectionProps> = ({ data }) => {
   const tags = useMemo(() => {
     const t = [];
     if (data.JiangLiS > 0) t.push(`荣耀 x${data.JiangLiS}`);
-    if (Number(data.Apmpx || 0) > 80) t.push(`手速Top ${100 - Number(data.Apmpx || 0)}%`);
+    if (Number(data.Apmpx || 0) > 80) t.push(`手速前 ${100 - Number(data.Apmpx || 0)}%`);
     if (data.ChuChaiCS > 0) t.push(`足迹 ${data.ChuChaiCS} 城`);
     if (data.Readcnt > 1000) t.push("博览群书");
     return t.slice(0, 3);
@@ -42,60 +42,60 @@ const SummarySection: React.FC<SummarySectionProps> = ({ data }) => {
 
   return (
     <div className="w-full relative flex flex-col items-center justify-center h-full px-4" style={{ transformStyle: 'preserve-3d' }}>
-      
+
       {/* Background Effect */}
       <div className="absolute inset-0 pointer-events-none" style={{ transform: 'translateZ(-100px)' }}>
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-         {/* Grid lines */}
-         <svg className="w-full h-full opacity-20" viewBox="0 0 400 800">
-             <line x1="0" y1="200" x2="400" y2="200" stroke="#22d3ee" strokeWidth="0.5" />
-             <line x1="0" y1="600" x2="400" y2="600" stroke="#22d3ee" strokeWidth="0.5" />
-             <line x1="200" y1="0" x2="200" y2="800" stroke="#22d3ee" strokeWidth="0.5" />
-         </svg>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        {/* Grid lines */}
+        <svg className="w-full h-full opacity-20" viewBox="0 0 400 800">
+          <line x1="0" y1="200" x2="400" y2="200" stroke="#22d3ee" strokeWidth="0.5" />
+          <line x1="0" y1="600" x2="400" y2="600" stroke="#22d3ee" strokeWidth="0.5" />
+          <line x1="200" y1="0" x2="200" y2="800" stroke="#22d3ee" strokeWidth="0.5" />
+        </svg>
       </div>
 
       <div className="text-center mb-6" style={{ transform: 'translateZ(60px)' }}>
-          <p className="text-sm text-cyan-200 uppercase tracking-[0.5em] font-bold mb-2">IDENTITY</p>
-          <h2 className="text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-float">
-             {keyword}
-          </h2>
+        <p className="text-sm text-cyan-200 uppercase tracking-[0.5em] font-bold mb-2">身份标识</p>
+        <h2 className="text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] animate-float">
+          {keyword}
+        </h2>
       </div>
 
       {/* Radar Chart Container */}
       <div className="relative w-full max-w-[320px] aspect-square mb-8" style={{ transform: 'translateZ(40px)' }}>
-          {/* Tech Ring Background */}
-          <div className="absolute inset-0 rounded-full border border-white/10 animate-spin-slow"></div>
-          <div className="absolute inset-4 rounded-full border border-cyan-500/20 border-dashed animate-[spin_20s_linear_infinite_reverse]"></div>
-          
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
-              <PolarGrid stroke="rgba(255,255,255,0.1)" />
-              <PolarAngleAxis dataKey="subject" tick={{ fill: '#22d3ee', fontSize: 10, fontWeight: 'bold' }} />
-              <Radar
-                name="MyStats"
-                dataKey="A"
-                stroke="#22d3ee"
-                strokeWidth={2}
-                fill="#22d3ee"
-                fillOpacity={0.4}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
+        {/* Tech Ring Background */}
+        <div className="absolute inset-0 rounded-full border border-white/10 animate-spin-slow"></div>
+        <div className="absolute inset-4 rounded-full border border-cyan-500/20 border-dashed animate-[spin_20s_linear_infinite_reverse]"></div>
+
+        <ResponsiveContainer width="100%" height="100%">
+          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+            <PolarGrid stroke="rgba(255,255,255,0.1)" />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: '#22d3ee', fontSize: 10, fontWeight: 'bold' }} />
+            <Radar
+              name="我的数据"
+              dataKey="A"
+              stroke="#22d3ee"
+              strokeWidth={2}
+              fill="#22d3ee"
+              fillOpacity={0.4}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* Stats Tags */}
       <div className="flex flex-wrap justify-center gap-3" style={{ transform: 'translateZ(30px)' }}>
-          {tags.map((tag, i) => (
-             <div key={i} className="px-4 py-2 bg-black/40 backdrop-blur-md border border-cyan-500/40 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                 <span className="text-xs font-bold text-white tracking-wide">{tag}</span>
-             </div>
-          ))}
+        {tags.map((tag, i) => (
+          <div key={i} className="px-4 py-2 bg-black/40 backdrop-blur-md border border-cyan-500/40 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+            <span className="text-xs font-bold text-white tracking-wide">{tag}</span>
+          </div>
+        ))}
       </div>
 
       <div className="mt-12 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" style={{ transform: 'translateZ(20px)' }}></div>
-      <p className="mt-4 text-[10px] text-gray-400 font-mono" style={{ transform: 'translateZ(20px)' }}>
+      {/*<p className="mt-4 text-[10px] text-gray-400 font-mono" style={{ transform: 'translateZ(20px)' }}>
           GENERATED BY 我们的大数据 2025
-      </p>
+      </p> */}
 
     </div>
   );

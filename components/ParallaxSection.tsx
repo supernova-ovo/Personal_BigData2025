@@ -57,7 +57,7 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({ children, index, onIn
 
       rafId = requestAnimationFrame(animate);
     };
-    
+
     animate();
 
     const handleInput = (clientX: number, clientY: number) => {
@@ -77,7 +77,7 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({ children, index, onIn
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return;
       hasOrientation = true;
-      const gamma = e.gamma || 0; 
+      const gamma = e.gamma || 0;
       const beta = e.beta || 0;
       const clampedGamma = Math.max(-40, Math.min(40, gamma));
       targetX = clampedGamma / 80;
@@ -99,14 +99,14 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({ children, index, onIn
   }, [index, onInView]);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       id={id}
       className="h-screen w-full snap-start relative flex flex-col justify-center items-center overflow-hidden bg-transparent"
-      style={{ perspective: '800px' }} 
+      style={{ perspective: '800px' }}
     >
       {/* Floating Particles - Updated for Higher Visibility */}
-      <div 
+      <div
         ref={bg1Ref}
         className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000 ${isVisible ? 'opacity-70' : 'opacity-0'}`}
       >
@@ -114,31 +114,30 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({ children, index, onIn
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl animate-float-delayed mix-blend-screen"></div>
       </div>
 
-      <div 
+      <div
         ref={bg2Ref}
         className={`absolute inset-0 z-0 pointer-events-none mix-blend-screen transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'}`}
       >
-         {/* Brighter, more defined particles */}
-         <div className="absolute top-10 right-20 w-2 h-2 bg-white rounded-full animate-ping shadow-[0_0_10px_white]"></div>
-         <div className="absolute bottom-20 left-10 w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_10px_cyan]"></div>
-         <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-purple-300 rounded-full opacity-60 shadow-[0_0_10px_purple]"></div>
-         <div className="absolute top-1/3 left-10 w-6 h-6 bg-blue-400/20 rounded-full blur-md animate-pulse"></div>
-         <div className="absolute bottom-1/3 right-10 w-3 h-3 bg-white/40 rounded-full animate-float"></div>
+        {/* Brighter, more defined particles */}
+        <div className="absolute top-10 right-20 w-2 h-2 bg-white rounded-full animate-ping shadow-[0_0_10px_white]"></div>
+        <div className="absolute bottom-20 left-10 w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-[0_0_10px_cyan]"></div>
+        <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-purple-300 rounded-full opacity-60 shadow-[0_0_10px_purple]"></div>
+        <div className="absolute top-1/3 left-10 w-6 h-6 bg-blue-400/20 rounded-full blur-md animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-10 w-3 h-3 bg-white/40 rounded-full animate-float"></div>
       </div>
-      
+
       {/* Content Container */}
-      <div 
-        className={`relative z-10 w-full max-w-md px-6 py-8 h-full flex flex-col justify-center transition-all duration-1000 ease-out ${
-          isVisible ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-20 blur-sm'
-        }`}
+      <div
+        className={`relative z-10 w-full max-w-md px-6 py-8 h-full flex flex-col justify-center transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-20 blur-sm'
+          }`}
       >
-        <div 
+        <div
           ref={contentRef}
           className="w-full h-full flex flex-col justify-center will-change-transform"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          <div className="animate-float" style={{ transformStyle: 'preserve-3d' }}>
-              {children}
+          <div className="animate-float h-full w-full" style={{ transformStyle: 'preserve-3d' }}>
+            {children}
           </div>
         </div>
       </div>

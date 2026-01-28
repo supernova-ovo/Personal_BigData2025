@@ -1,12 +1,14 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { AnnualReportData } from '../types';
 import { generateInspiringMessage } from '../services/geminiService';
 
 interface AiMessageSectionProps {
   data: AnnualReportData;
+  onRestart?: () => void;
 }
 
-const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data }) => {
+const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data, onRestart }) => {
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -20,7 +22,7 @@ const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data }) => {
 
   useEffect(() => {
     // 生成唯一的请求标识符
-    const requestKey = `${data.GongHao}-${data.NianFen}`;
+    const requestKey = `${data.GongHao} -${data.NianFen} `;
 
     // 如果已经有相同数据的消息，直接使用（避免重复请求）
     if (currentRequestKeyRef.current === requestKey && message && message.trim()) {
@@ -105,10 +107,6 @@ const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data }) => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center" style={{ transformStyle: 'preserve-3d' }}>
       <div className="mb-8 text-center" style={{ transform: 'translateZ(60px)' }}>
-        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/40 backdrop-blur-md mb-4 shadow-[0_0_20px_rgba(255,255,255,0.3)] animate-float">
-          <div className="w-2 h-2 bg-fuchsia-400 rounded-full animate-ping shadow-[0_0_10px_fuchsia]"></div>
-          <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">AI Intelligence</span>
-        </div>
         <h2 className="text-6xl font-black text-white drop-shadow-[0_0_15px_rgba(167,139,250,0.8)]">
           未来<span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-cyan-400">寄语</span>
         </h2>
@@ -136,7 +134,7 @@ const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data }) => {
                   <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
                   <div className="absolute inset-0 border-4 border-t-cyan-400 border-r-fuchsia-400 border-b-transparent border-l-transparent rounded-full animate-spin"></div>
                 </div>
-                <p className="text-white text-xs font-bold animate-pulse tracking-widest">ANALYZING DATA...</p>
+                <p className="text-white text-xs font-bold animate-pulse tracking-widest">分析数据中...</p>
               </div>
             ) : (
               <div className="relative z-10 text-center w-full" style={{ transform: 'translateZ(20px)' }}>
@@ -162,11 +160,20 @@ const AiMessageSection: React.FC<AiMessageSectionProps> = ({ data }) => {
       </div>
 
       <div className="mt-12 w-full px-4" style={{ transform: 'translateZ(50px)' }}>
-        <button className="w-full py-4 relative overflow-hidden group bg-white text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+        <button
+          onClick={() => {
+            if (onRestart) {
+              onRestart();
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
+          className="w-full py-4 relative overflow-hidden group bg-white text-black font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-white to-fuchsia-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <span className="relative z-10 group-hover:text-black transition-colors text-lg flex items-center justify-center gap-2">
-            <span>分享我的高光时刻</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+            <span>再看一遍</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
           </span>
         </button>
       </div>
