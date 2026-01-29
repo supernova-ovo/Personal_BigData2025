@@ -21,7 +21,7 @@ export const mockUserData: AnnualReportData = {
     DengLuCS: 245,           // 登录次数
     DengLuTB: 15,            // 登录同比
     DengLuPX: 78,            // 登录排序
-    RiZuiCZG: 14.5,          // 日最长在岗
+    RiZuiCZG: 14.5,          // 日最长在岗（小时）
     RiZuiCZG_Date: "2025-03-15T00:00:00",
     ZuiZaoSX: "2025-01-08T06:30:00",  // 最早上线
     ZuiWanXX: "2025-06-20T23:45:00",  // 最晚下线

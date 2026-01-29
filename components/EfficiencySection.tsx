@@ -54,7 +54,7 @@ const EfficiencySection: React.FC<EfficiencySectionProps> = ({ data }) => {
                 <div className="bg-slate-900/80 border border-purple-500/30 p-3 rounded-lg backdrop-blur-sm">
                     <p className="text-[10px] text-gray-400">处理率</p>
                     <p className="text-xl font-bold text-white">{data.ChuLiL || 0}%</p>
-                    <p className="text-[9px] text-gray-500 mt-1">平均耗时: {(Number(data.PingJunCLSC || 0) / 60).toFixed(1)}h</p>
+                    <p className="text-[9px] text-gray-500 mt-1">平均耗时: {(Number(data.PingJunCLSC || 0) / 60).toFixed(1)}小时</p>
                 </div>
 
                 {/* PC vs App */}

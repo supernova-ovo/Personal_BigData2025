@@ -196,7 +196,7 @@ class ApiService {
         'n_zsfx': 'N_zsfx',              // 知识分享点赞
         'n_zt': 'N_zt',                  // 专题点赞
         'n_qt': 'N_qt',                  // 其他点赞
-        'zuiDuoYW': 'ZuiDuoYW'           // 最常用业务
+        'ZuiduoYW': 'ZuiDuoYW'           // 最常用业务
       };
 
       // 应用字段名映射

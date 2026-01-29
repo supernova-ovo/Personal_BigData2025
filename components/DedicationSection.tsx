@@ -120,7 +120,7 @@ const DedicationSection: React.FC<DedicationSectionProps> = ({ data }) => {
                         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]"></div>
                     </div>
                     <p className="text-[10px] text-gray-400 uppercase">最长在岗</p>
-                    <p className="text-2xl font-bold text-white">{data.RiZuiCZG || 0} <span className="text-xs font-normal">h</span></p>
+                    <p className="text-2xl font-bold text-white">{data.RiZuiCZG || 0} <span className="text-xs font-normal">小时</span></p>
                     <p className="text-[9px] text-gray-400 mt-1">{safeDate(data.RiZuiCZG_Date)}</p>
                 </div>
 
