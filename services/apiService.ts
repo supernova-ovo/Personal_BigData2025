@@ -195,7 +195,8 @@ class ApiService {
         'n_rsdt': 'N_rsdt',              // 人事大厅点赞
         'n_zsfx': 'N_zsfx',              // 知识分享点赞
         'n_zt': 'N_zt',                  // 专题点赞
-        'n_qt': 'N_qt'                   // 其他点赞
+        'n_qt': 'N_qt',                  // 其他点赞
+        'zuiDuoYW': 'ZuiDuoYW'           // 最常用业务
       };
 
       // 应用字段名映射
@@ -206,15 +207,6 @@ class ApiService {
           // 保留原字段名，以防其他地方使用
         }
       }
-      // console.log('🟡 [API Service] 字段映射后的 mappedData:', JSON.stringify(mappedData, null, 2));
-      // console.log('🟡 [API Service] mappedData 关键字段检查:', {
-      //   XingMing: mappedData.XingMing || mappedData.xingMing,
-      //   GongHao: mappedData.GongHao || mappedData.gongHao,
-      //   Apm: mappedData.Apm || mappedData.APM,
-      //   ExamCiShu: mappedData.ExamCiShu || mappedData.examCiShu,
-      //   Readcnt: mappedData.Readcnt || mappedData.readcnt,
-      //   Zancnt: mappedData.Zancnt || mappedData.zancnt
-      // });
 
       const finalResponse = {
         success: true,
@@ -228,7 +220,7 @@ class ApiService {
       console.error('API request failed:', error);
       return {
         success: false,
-        message: error instanceof Error ? error.message : 'Unknown error occurred',
+        message: '请先登录以查看数据。', // Simplified user-friendly error message
       };
     }
   }

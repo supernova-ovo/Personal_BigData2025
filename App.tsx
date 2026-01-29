@@ -43,6 +43,15 @@ const ErrorMessage: React.FC<{ message: string; onRetry: () => void }> = ({ mess
         </svg>
         <span>重试</span>
       </button>
+      <a
+        href="https://lol.tepc.cn/mm/default.aspx?ReturnUrl=https://lol.tepc.cn/jetopcms/aiapps/BigData/index.html"
+        className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+        <span>去登录</span>
+      </a>
     </div>
   </div>
 );

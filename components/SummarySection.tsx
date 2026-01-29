@@ -34,7 +34,7 @@ const SummarySection: React.FC<SummarySectionProps> = ({ data }) => {
   const tags = useMemo(() => {
     const t = [];
     if (data.JiangLiS > 0) t.push(`荣耀 x${data.JiangLiS}`);
-    if (Number(data.Apmpx || 0) > 80) t.push(`手速前 ${100 - Number(data.Apmpx || 0)}%`);
+    if (Number(data.Apmpx || 0) > 80) t.push(`最高手速 ${100 - Number(data.Apmpx || 0)}%`);
     if (data.ChuChaiCS > 0) t.push(`足迹 ${data.ChuChaiCS} 城`);
     if (data.Readcnt > 1000) t.push("博览群书");
     return t.slice(0, 3);

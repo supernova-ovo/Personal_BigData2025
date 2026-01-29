@@ -10,6 +10,10 @@ const IntroSection: React.FC<IntroSectionProps> = ({ data }) => {
   const displayRole = data.GangWei || '岗位信息暂缺';
   const displayId = data.GongHao || '暂无';
   const displaySchool = data.BiYeYX || '未知院校';
+  // Only show remote photos in production
+  const avatarUrl = (import.meta as any).env && (import.meta as any).env.PROD
+    ? `https://lol.tepc.cn/jetopcms/KS/attimgservice.ashx?sn=getphoto&uid=${encodeURIComponent(displayId)}`
+    : null;
 
   return (
     <div className="flex flex-col items-center text-center space-y-8 animate-fade-in-up relative h-full justify-center" style={{ transformStyle: 'preserve-3d' }}>
@@ -26,8 +30,28 @@ const IntroSection: React.FC<IntroSectionProps> = ({ data }) => {
       <div className="relative z-10 group" style={{ transform: 'translateZ(40px)' }}>
         <div className="absolute -inset-4 bg-gradient-to-r from-cyan-600 via-blue-700 to-purple-700 rounded-full blur-lg opacity-60 animate-spin-slow"></div>
         <div className="relative w-32 h-32 rounded-full border-4 border-white/20 overflow-hidden shadow-2xl bg-black/50 backdrop-blur-sm flex items-center justify-center">
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={displayName}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const el = e.currentTarget as HTMLImageElement;
+                // hide broken image to reveal fallback initial
+                el.style.display = 'none';
+                const parent = el.parentElement;
+                if (parent) {
+                  const span = parent.querySelector('span.fallback-initial') as HTMLSpanElement | null;
+                  if (span) span.style.display = 'flex';
+                }
+              }}
+            />
+          ) : null}
+
           {/* Fallback to first char of name or '?' */}
-          <span className="text-4xl font-black text-white">{displayName.charAt(0)}</span>
+          <span className="text-4xl font-black text-white fallback-initial" style={{ display: avatarUrl ? 'none' : 'flex' }}>
+            {displayName.charAt(0) || '?'}
+          </span>
         </div>
       </div>
 
